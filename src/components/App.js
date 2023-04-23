@@ -3,12 +3,21 @@ import { nanoid } from 'nanoid';
 import ContactForm from './ContactForm/ContactForm';
 import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
+import {
+  getDataFromLocaleStorage,
+  setDataToLocalStorage,
+} from './Storage/storage';
 
 export default class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const listOfContacts = getDataFromLocaleStorage();
+    if (listOfContacts) this.setState({ contacts: listOfContacts });
+  }
 
   addInfoToList = ({ name, number }) => {
     this.state.contacts.find(
@@ -39,6 +48,7 @@ export default class App extends Component {
 
   render() {
     const { contacts, filter } = this.state;
+    if (contacts.length) setDataToLocalStorage(contacts);
     return (
       <div className="container">
         <h1>Phonebook</h1>
