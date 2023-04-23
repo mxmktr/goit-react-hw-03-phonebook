@@ -5,6 +5,7 @@ import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
 import {
   getDataFromLocaleStorage,
+  removeFromLocaleStorage,
   setDataToLocalStorage,
 } from './Storage/storage';
 
@@ -46,9 +47,17 @@ export default class App extends Component {
     });
   };
 
+  componentDidUpdate(_, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length === 1 && contacts.length === 0) {
+      removeFromLocaleStorage();
+    }
+  }
+
   render() {
     const { contacts, filter } = this.state;
-    if (contacts.length) setDataToLocalStorage(contacts);
+    contacts.length && setDataToLocalStorage(contacts);
+
     return (
       <div className="container">
         <h1>Phonebook</h1>

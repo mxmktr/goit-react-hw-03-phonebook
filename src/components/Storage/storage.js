@@ -18,3 +18,11 @@ export function setDataToLocalStorage(value) {
     alert(error.message);
   }
 }
+
+export function removeFromLocaleStorage() {
+  try {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+  } catch (error) {
+    alert(error.message);
+  }
+}
