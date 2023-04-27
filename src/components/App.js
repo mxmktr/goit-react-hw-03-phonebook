@@ -39,6 +39,18 @@ export default class App extends Component {
     this.setState({ [currentTarget.name]: currentTarget.value });
   };
 
+  componentDidUpdate(_, prevState) {
+    const { contacts } = this.state;
+    if (
+      prevState.contacts.length !== contacts.length &&
+      contacts.length !== 0
+    ) {
+      setDataToLocalStorage(contacts);
+    } else if (contacts.length === 0) {
+      removeFromLocaleStorage();
+    }
+  }
+
   delete = indexID => {
     this.setState(({ contacts }) => {
       return {
@@ -47,16 +59,8 @@ export default class App extends Component {
     });
   };
 
-  componentDidUpdate(_, prevState) {
-    const { contacts } = this.state;
-    if (prevState.contacts.length === 1 && contacts.length === 0) {
-      removeFromLocaleStorage();
-    }
-  }
-
   render() {
     const { contacts, filter } = this.state;
-    contacts.length && setDataToLocalStorage(contacts);
 
     return (
       <div className="container">
